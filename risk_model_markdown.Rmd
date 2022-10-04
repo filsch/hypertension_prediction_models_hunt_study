@@ -14,7 +14,7 @@ library(randomForest)
 library(glmnet)
 library(kernlab)
 library(recipes)
- ```
+```
 
 Dissemination and external validation of hypertension risk models is important, but rarely accommodated for in the literature. This is especially true when machine learning models are being used, as they are often too complex to describe in traditional appendiceses. We provide the machine learning models developed using the XGBoost, Random Forest, and Elastic regression methods on the HUNT Study data [cite]. These models predict the 11-year risk of incident hypertension and were fitted using a large population cohort of 23722 individuals and 18 input features. See ... for details on how these models were fitted.
 
