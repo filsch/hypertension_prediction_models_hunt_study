@@ -1,5 +1,5 @@
 predict.simple_lr_model <- function(obj, newdata){
-  #Corresponds to LASSO with log(Alpha) = -4.383767, see Figure 3. 
+  #Corresponds to LASSO with log(Alpha) = -4.383767, see Figure 3 in development article. 
   df=newdata
   x = -1.385575 - 0.07447008*df$Height + 0.18416595*df$BMI + 0.44515847*df$SysBP + 0.39681464*df$DiaBP
       + 0.02019300*df$FamHypHist_yes + 0.49290664*df$Age           

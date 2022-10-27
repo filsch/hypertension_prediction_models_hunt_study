@@ -90,7 +90,7 @@ head(y_hat, n=2)
 
 #### Model using simple-to-collect variables
 
-We include a logistic regression model that uses 6 more easily-available variables. These are: *Age*, *systolic blood pressure*, *diastolic blood pressure*, *BMI*, *height*, and *history of hypertension in close family*. This model was derived from a sensitivity analysis performed after development of the full models. The corresponding regularization penalty applied in model fitting was log($\lambda$) = -4.4301, see Figure ... in the development article [main article].
+We include a logistic regression model that uses 6 more easily-available variables. These are: *Age*, *systolic blood pressure*, *diastolic blood pressure*, *BMI*, *height*, and *history of hypertension in close family*. This model was derived from a sensitivity analysis performed after development of the full models. The corresponding regularization penalty applied in model fitting was log( lambda ) = -4.384, see Figure ... in the development article [main article].
 
 ```{r simpler}
 source("auxiliary_models.r")
