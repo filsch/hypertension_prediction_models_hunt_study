@@ -1,6 +1,8 @@
 predict.simple_lr_model <- function(obj, newdata){
+  #Corresponds to LASSO with log(Alpha) = -4.383767, see Figure 3. 
   df=newdata
-  x = -1.3946 + -0.077554*df$Height + 0.186892*df$BMI + 0.448547*df$SysBP + 0.399027*df$DiaBP + 0.036866*df$FamHypHist_yes + 0.496008*df$Age           
+  x = -1.385575 - 0.07447008*df$Height + 0.18416595*df$BMI + 0.44515847*df$SysBP + 0.39681464*df$DiaBP
+      + 0.02019300*df$FamHypHist_yes + 0.49290664*df$Age           
   
   p <- 1/(1 + exp(-x))
   return(data.frame("Normotensive"=1-p, "Hypertensive"=p))
@@ -13,8 +15,8 @@ predict.FraminghamModel <- function(obj, newdata){
   dia_bp <- newdata$DiaBP
   bmi <- newdata$BMI
   
+  #Adjustment of coefficients, see Table in S4 Table in publication.
   smoke <- as.numeric(newdata$SmokingStatus == "currently")
-  #Adjustment of coefficient
   par_hyp <- as.numeric(newdata$FamHypHist == "yes")*1.6394
   women <- as.numeric(newdata$Sex == "female")
   
@@ -30,7 +32,7 @@ predict.RecalibratedFraminghamModel <- function(obj, newdata){
   dia_bp <- newdata$DiaBP
   bmi <- newdata$BMI
   
-  
+  #Adjustment of coefficients, see Table in S4 Table in publication.
   smoke <- as.numeric(newdata$SmokingStatus == "currently")
   par_hyp <- as.numeric(newdata$FamHypHist == "yes")*1.6394
   women <- as.numeric(newdata$Sex == "female")
@@ -38,7 +40,7 @@ predict.RecalibratedFraminghamModel <- function(obj, newdata){
   x = log(11) - (22.9495 - 0.1564*age - 0.2029*women - 0.0593*sys_bp - 0.1285*dia_bp - 0.1907*smoke - 0.1661*par_hyp - 0.0339*bmi + 0.0016*age*dia_bp)
   x = x / 0.8769
   #Recalibration
-  s = -0.4248 + x
+  s = -0.4251 + x
   p <- 1/(1+exp(-s))
   return(data.frame("Normotensive"=1-p, "Hypertensive"=p))
 }

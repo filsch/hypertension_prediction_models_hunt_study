@@ -1,21 +1,20 @@
 ---
 title: "Hypertension risk models developed using the HUNT Study data"
 author: "Filip Schjerven"
-date: "2022-10-03"
+date: "2022-10-27"
 output: rmarkdown::github_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-library(caret)
-library(xgboost) #pre 1.6 version
-library(RRF)
-library(randomForest)
-library(glmnet)
-library(recipes)
+library(caret) #version 6.0.93
+library(xgboost) #developed model using version 1.5.1.1, tested for 1.6.0.1, 
+library(RRF) #version 1.9.4
+library(randomForest) #version 4.7.1.1
+library(recipes) #version 1.0.1
 ```
 
-Dissemination and external validation of hypertension risk models is important, but rarely accommodated for in the literature. This is especially true when machine learning models are being used, as they are often too complex to describe in traditional appendiceses. We provide the machine learning models developed using the XGBoost, Random Forest, and Elastic regression methods on the HUNT Study data [cite]. These models predict the 11-year risk of incident hypertension and were fitted using a large population cohort of 23722 individuals and 18 input features. See ... for details on how these models were fitted.
+Dissemination and external validation of hypertension risk models is important, but rarely accommodated for in the literature. This is especially true when machine learning models are being used, as they are often too complex to describe in traditional appendices. We provide the machine learning models developed using the XGBoost, Random Forest, and Elastic regression methods on the HUNT Study data [cite]. These models predict the 11-year risk of incident hypertension and were fitted using a large population cohort of 23722 individuals and 18 input features. See ... for details on how these models were fitted.
 
 In addition, we include three additional models:
   
@@ -93,7 +92,8 @@ y_hat <- predict(simpler_model, newdata=prepped_example_subset)
 preds <- format_predictions(outcome=prepped_example_subset$HypOutcome, predicted_probs=y_hat) 
 
 #Area under the receiver operator curve:
-twoClassSummary(preds, lev = levels(preds$obs))
+#twoClassSummary throws error for tibbles input
+twoClassSummary(as.data.frame(preds), lev = levels(preds$obs))
 
 ```
 
@@ -113,7 +113,8 @@ y_hat <- predict(framingham, newdata=example_subset)
 preds <- format_predictions(outcome=example_subset$HypOutcome, predicted_probs=y_hat) 
 
 #Area under the receiver operator curve:
-twoClassSummary(preds, lev = levels(preds$obs))
+#twoClassSummary throws error for tibbles input
+twoClassSummary(as.data.frame(preds), lev = levels(preds$obs))
 ```
 #### The Framingham risk model recalibrated using HUNT Study data
 Lastly, we include the Framingham risk model after recalibration to the HUNT Study data using method 2 suggested by Steyerberg [cite]. Again, note the use of the original data. See Table A ... in ... for details on the recalibrated model.
@@ -126,7 +127,8 @@ y_hat <- predict(recalibrated_framingham, newdata=example_subset)
 preds <- format_predictions(outcome=example_subset$HypOutcome, predicted_probs=y_hat) 
 
 #Area under the receiver operator curve:
-twoClassSummary(preds, lev = levels(preds$obs))
+#twoClassSummary throws error for tibbles input
+twoClassSummary(as.data.frame(preds), lev = levels(preds$obs))
 ```
 
 #### Performance measures
@@ -135,16 +137,17 @@ We include a formatting function for easy use of caret-package metrics as well a
 preds <- format_predictions(outcome=prepped_example_data$HypOutcome, predicted_probs=y_hat) 
 
 #Area under the receiver operator curve:
-twoClassSummary(preds, lev = levels(preds$obs))
+#twoClassSummary throws error for tibbles input
+twoClassSummary(as.data.frame(preds), lev = levels(preds$obs))
 
-#Are under the precision-recall curve
+#Area under the precision-recall curve
 prSummary(preds, lev = levels(preds$obs))
 
 #Brier score
-compute_brier(preds$y, preds$Hypertensive)
+brierSummary(preds)
 
 #Integrated calibration index
-compute_ici(preds$y, preds$Hypertensive)
+iciSummary(preds)
 ```
 
 
