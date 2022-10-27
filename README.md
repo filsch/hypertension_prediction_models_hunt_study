@@ -1,32 +1,33 @@
 Hypertension risk models developed using the HUNT Study data
 ================
 Filip Schjerven
-2022-10-03
+2022-10-27
 
 Dissemination and external validation of hypertension risk models is
 important, but rarely accommodated for in the literature. This is
 especially true when machine learning models are being used, as they are
-often too complex to describe in traditional appendiceses. We provide
-the machine learning models developed using the XGBoost, Random Forest,
-and Elastic regression methods on the HUNT Study data \[cite\]. These
-models predict the 11-year risk of incident hypertension and were fitted
-using a large population cohort of 23722 individuals and 18 input
-features. See … for details on how these models were fitted.
+often too complex to describe in traditional appendices. We used machine
+learning to predict risk of hypertension 11 years later on data from
+23722 HUNT Study participants , and provide the machine learning models
+developed using the XGBoost, Random Forest, and Elastic regression
+methods \[[1](#ref-åsvold2022)\] \[[2](#ref-chen2021)\]
+\[[3](#ref-breiman2001)\] \[[4](#ref-zou2005)\] . See \[main article\]
+for details on how these models were fitted.
 
 In addition, we include three additional models:
 
-- A smaller logistic regression model developed as a sensitivity
+- A smaller logistic regression model developed as part of a sensitivity
   analysis on the HUNT Study data. This model utilizes only a few, more
   easily available features.
 - An adaptation of the externally developed Framingham risk model, and
 - an adaptation of the Framingham risk model recalibrated on the HUNT
-  Study data.
+  Study data \[[5](#ref-RN10737)\] .
 
 Two more modelling methods were reported in our study: The K-Nearest
-Neighbour and the SVM models. These are not provided here, as they
-cannot be detached from the development data which we do not have
-permission to share freely. See … for more info and how to apply for
-access to these data.
+Neighbour and the SVM models. These are not provided here, as they could
+not be detached from the development data which we do not have
+permission to share freely. See \[main article\] for more info and how
+to apply for access to these data.
 
 #### Models, preprocessings and helper functions.
 
@@ -40,8 +41,10 @@ source("helper_functions.r")
 
 We include some example data to illustrate the input data required for
 the different models. All possible variable types and levels are
-represented. See … for information on variables and how they were
-recorded and constructed.
+represented. See \[main article\] for information on variables and how
+they were recorded and constructed. Note that the example data is not
+real data and is only included to demonstrate how the resources in this
+repository may be used.
 
 ``` r
 load("example_data.rds")
@@ -73,13 +76,13 @@ regression models:
 
 #### Preprocessing and predictions
 
-The ‘prep’ variable contains pre-processing function that standardizes
-numerical variables and one-hot-encodes factors so they match model
-input requirements for the machine learning models. The parameters of
-the ‘prep’ variable has been learned from the training data used to
-develop the models. Note, we assume that that the data should be
-complete, i.e., no missing entries, and with similar names and format as
-the example data.
+The ‘prep’ object found in ‘prep.rds’ contains a pre-processing function
+that standardizes numerical variables and one-hot-encodes factors so
+they match model input requirements for the machine learning models. The
+parameters of the ‘prep’ variable has been learned from the training
+data used to develop the models. Note, we assume that that the data
+should be complete, i.e., no missing entries, and with similar names and
+format as the example data.
 
 ``` r
 prepped_example_data <- bake(prep, example_data)
@@ -96,13 +99,13 @@ head(y_hat, n=2)
 
 #### Model using simple-to-collect variables
 
-We include a logistic regression model that only uses variables that are
-more easily available. These are: *Age*, *systolic blood pressure*,
-*diastolic blood pressure*, *BMI*, *height*, and *history of
-hypertension in close family*. This model was derived from a sensitivity
-analysis performed after development of the full models \[cite\]. The
-corresponding regularization penalty applied in model fitting was
-log($\lambda$) = -4.4301, see Figure … in the development article.
+We include a logistic regression model that uses 6 more easily-available
+variables. These are: *Age*, *systolic blood pressure*, *diastolic blood
+pressure*, *BMI*, *height*, and *history of hypertension in close
+family*. This model was derived from a sensitivity analysis performed
+after development of the full models. The corresponding regularization
+penalty applied in model fitting was log($\lambda$) = -4.4301, see
+Figure … in the development article \[main article\].
 
 ``` r
 source("auxiliary_models.r")
@@ -116,26 +119,28 @@ y_hat <- predict(simpler_model, newdata=prepped_example_subset)
 preds <- format_predictions(outcome=prepped_example_subset$HypOutcome, predicted_probs=y_hat) 
 
 #Area under the receiver operator curve:
-twoClassSummary(preds, lev = levels(preds$obs))
+#twoClassSummary throws error for tibbles input
+twoClassSummary(as.data.frame(preds), lev = levels(preds$obs))
 ```
 
     ##   ROC  Sens  Spec 
-    ## 0.625 0.500 0.500
+    ## 0.375 0.500 0.500
 
 #### The Framingham risk model
 
 The Framingham risk model was the only externally developed model we
 could find that we were able to implement using the available variables
-in the HUNT Study data \[cite\]. To encourage reproduction and further
-external validation, we include the model here. This model only require
-the following variables in the dataframe/tibble provided to the
-‘newdata’ argument: *Age*, *systolic BP*, *diastolic BP*, *BMI*, *sex*,
-*smoking status* and *family history of hypertension*.
+in the HUNT Study data \[[5](#ref-RN10737)\] . To encourage reproduction
+and further external validation, we include the model used here. This
+model only require the following variables in the dataframe/tibble
+provided to the ‘newdata’ argument: *Age*, *systolic BP*, *diastolic
+BP*, *BMI*, *sex*, *smoking status* and *family history of
+hypertension*.
 
 Note that the data must be in its original form when the Framingham risk
-model is used, i.e., without preprocessing. See table A … in … for
-details on adaptations made to the model to fit the available data in
-the HUNT Study.
+model is used, i.e., without preprocessing. See Table in S4 Table in the
+development article for details on adaptations made to the model to fit
+the available data in the HUNT Study \[main article\].
 
 ``` r
 # Note the use of example_data and not prepped_example_data
@@ -148,7 +153,8 @@ y_hat <- predict(framingham, newdata=example_subset)
 preds <- format_predictions(outcome=example_subset$HypOutcome, predicted_probs=y_hat) 
 
 #Area under the receiver operator curve:
-twoClassSummary(preds, lev = levels(preds$obs))
+#twoClassSummary throws error for tibbles input
+twoClassSummary(as.data.frame(preds), lev = levels(preds$obs))
 ```
 
     ##       ROC      Sens      Spec 
@@ -157,9 +163,10 @@ twoClassSummary(preds, lev = levels(preds$obs))
 #### The Framingham risk model recalibrated using HUNT Study data
 
 Lastly, we include the Framingham risk model after recalibration to the
-HUNT Study data using method 2 suggested by Steyerberg \[cite\]. Again,
-note the use of the original data. See Table A … in … for details on the
-recalibrated model.
+HUNT Study data using method 2 suggested by Steyerberg
+\[[6](#ref-steyerberg2004)\] . See Table in S4 Table in the development
+article for details on adaptations made to the model to fit the
+available data in the HUNT Study \[main article\].
 
 ``` r
 #We use the same dataset as for 'framingham'
@@ -169,7 +176,8 @@ y_hat <- predict(recalibrated_framingham, newdata=example_subset)
 preds <- format_predictions(outcome=example_subset$HypOutcome, predicted_probs=y_hat) 
 
 #Area under the receiver operator curve:
-twoClassSummary(preds, lev = levels(preds$obs))
+#twoClassSummary throws error for tibbles input
+twoClassSummary(as.data.frame(preds), lev = levels(preds$obs))
 ```
 
     ##  ROC Sens Spec 
@@ -179,24 +187,26 @@ twoClassSummary(preds, lev = levels(preds$obs))
 
 We include a formatting function for easy use of caret-package metrics
 as well as custom metrics. We have included the Brier Score and
-Integrated Calibration Index as custom functions \[cite\]. See, e.g.,
+Integrated Calibration Index as custom functions
+\[[7](#ref-austin2019)\] \[[8](#ref-brier1950)\] . See, e.g.,
 <https://topepo.github.io/caret/measuring-performance.html> for more
-performance metrics. Note that since the example data is randomly
-sampled data, the performance measures are shown only for illustrative
-purposes.
+performance metrics. Note that since the example data is only for
+demonstration, the performance measures are shown only for illustrative
+purposes and do not reflect real performance.
 
 ``` r
 preds <- format_predictions(outcome=prepped_example_data$HypOutcome, predicted_probs=y_hat) 
 
 #Area under the receiver operator curve:
-twoClassSummary(preds, lev = levels(preds$obs))
+#twoClassSummary throws error for tibbles input
+twoClassSummary(as.data.frame(preds), lev = levels(preds$obs))
 ```
 
     ##  ROC Sens Spec 
     ##  0.5  0.5  0.5
 
 ``` r
-#Are under the precision-recall curve
+#Area under the precision-recall curve
 prSummary(preds, lev = levels(preds$obs))
 ```
 
@@ -205,14 +215,101 @@ prSummary(preds, lev = levels(preds$obs))
 
 ``` r
 #Brier score
-compute_brier(preds$y, preds$Hypertensive)
+brierSummary(preds)
 ```
 
-    ## [1] 0.2665763
+    ## Brier Score 
+    ##    0.266582
 
 ``` r
 #Integrated calibration index
-compute_ici(preds$y, preds$Hypertensive)
+iciSummary(preds)
 ```
 
-    ## [1] 0.1640748
+    ##       ICI 
+    ## 0.1641066
+
+#### References
+
+<div id="refs" class="references csl-bib-body">
+
+<div id="ref-åsvold2022" class="csl-entry">
+
+<span class="csl-left-margin">1. </span><span
+class="csl-right-inline">Åsvold BO, Langhammer A, Rehn TA, Kjelvik G,
+Grøntvedt TV, Sørgjerd EP, et al. Cohort Profile Update: The HUNT Study,
+Norway. International Journal of Epidemiology. 2022.
+doi:[10.1093/ije/dyac095](https://doi.org/10.1093/ije/dyac095)</span>
+
+</div>
+
+<div id="ref-chen2021" class="csl-entry">
+
+<span class="csl-left-margin">2. </span><span
+class="csl-right-inline">Chen T, He T, Benesty M, Khotilovich V, Tang Y,
+Cho H, et al. Xgboost: Extreme gradient boosting. 2021. Available:
+<https://github.com/dmlc/xgboost></span>
+
+</div>
+
+<div id="ref-breiman2001" class="csl-entry">
+
+<span class="csl-left-margin">3. </span><span
+class="csl-right-inline">Breiman L. Random forests. Machine Learning.
+2001;45: 5–32.
+doi:[10.1023/A:1010933404324](https://doi.org/10.1023/A:1010933404324)</span>
+
+</div>
+
+<div id="ref-zou2005" class="csl-entry">
+
+<span class="csl-left-margin">4. </span><span
+class="csl-right-inline">Zou H, Hastie T. Regularization and variable
+selection via the elastic net. Journal of the Royal Statistical Society:
+Series B (Statistical Methodology). 2005;67: 301–320.
+doi:[10.1111/j.1467-9868.2005.00503.x](https://doi.org/10.1111/j.1467-9868.2005.00503.x)</span>
+
+</div>
+
+<div id="ref-RN10737" class="csl-entry">
+
+<span class="csl-left-margin">5. </span><span
+class="csl-right-inline">Parikh NI, Pencina MJ, Wang TJ, Benjamin EJ,
+Lanier KJ, Levy D, et al. A risk score for predicting near-term
+incidence of hypertension: The framingham heart study. Annals of
+Internal Medicine. 2008;148: 102–110.
+doi:[10.7326/0003-4819-148-2-200801150-00005](https://doi.org/10.7326/0003-4819-148-2-200801150-00005)</span>
+
+</div>
+
+<div id="ref-steyerberg2004" class="csl-entry">
+
+<span class="csl-left-margin">6. </span><span
+class="csl-right-inline">Steyerberg EW, Borsboom GJJM, Houwelingen HC
+van, Eijkemans MJC, Habbema JDF. Validation and updating of predictive
+logistic regression models: a study on sample size and shrinkage.
+Statistics in Medicine. 2004;23: 2567–2586.
+doi:[10.1002/sim.1844](https://doi.org/10.1002/sim.1844)</span>
+
+</div>
+
+<div id="ref-austin2019" class="csl-entry">
+
+<span class="csl-left-margin">7. </span><span
+class="csl-right-inline">Austin PC, Steyerberg EW. The Integrated
+Calibration Index (ICI) and related metrics for quantifying the
+calibration of logistic regression models. Statistics in Medicine.
+2019;38: 4051–4065.
+doi:[10.1002/sim.8281](https://doi.org/10.1002/sim.8281)</span>
+
+</div>
+
+<div id="ref-brier1950" class="csl-entry">
+
+<span class="csl-left-margin">8. </span><span
+class="csl-right-inline">Brier GW. Verification of forecasts expressed
+in terms of probability. Monthly weather review. 1950;78: 1–3. </span>
+
+</div>
+
+</div>
