@@ -107,7 +107,7 @@ penalty applied in model fitting was log( lambda ) = -4.384, and gave
 performance shown in Table 2. See Figure 3 in the development article
 \[ref to preprint\].
 
-##### Table 2: Performance model using simple-to-collect variables
+##### Table 2: Performance of model using simple-to-collect variables
 
 | AUC                    | Brier Score            | ICI                    |
 |------------------------|------------------------|------------------------|

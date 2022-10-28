@@ -92,7 +92,7 @@ head(y_hat, n=2)
 
 We include a logistic regression model that uses 6 more easily-available variables. These are: *Age*, *systolic blood pressure*, *diastolic blood pressure*, *BMI*, *height*, and *history of hypertension in close family*. This model was derived from a sensitivity analysis performed after development of the full models. The corresponding regularization penalty applied in model fitting was log( lambda ) = -4.384, and gave performance shown in Table 2. See Figure 3 in the development article [ref to preprint].
 
-##### Table 2: Performance model using simple-to-collect variables
+##### Table 2: Performance of model using simple-to-collect variables
 | AUC                  | Brier Score          | ICI                  |
 |----------------------|----------------------|----------------------|
 | 0.796 [0.786, 0.806] | 0.151 [0.146, 0.155] | 0.033 [0.025, 0.041] |
