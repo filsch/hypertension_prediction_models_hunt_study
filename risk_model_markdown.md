@@ -8,28 +8,28 @@ important, but rarely accommodated for in the literature. This is
 especially true when machine learning models are being used, as they are
 often too complex to describe in traditional appendices. We used machine
 learning to predict risk of hypertension 11 years later on data from
-23722 HUNT Study participants , and provide the machine learning models
+23722 HUNT Study participants, and provide the machine learning models
 developed using the XGBoost, Random Forest, and Elastic regression
 methods \[[1](#ref-åsvold2022)\] \[[2](#ref-chen2021)\]
-\[[3](#ref-breiman2001)\] \[[4](#ref-zou2005)\] . See \[main article\]
-for details on how these models were fitted.
+\[[3](#ref-breiman2001)\] \[[4](#ref-zou2005)\] . See \[ref to
+preprint\] for details on how these models were fitted.
 
 In addition, we include three additional models:
 
 - A smaller logistic regression model developed as part of a sensitivity
   analysis on the HUNT Study data. This model utilizes only a few, more
-  easily available features.
+  easily available features,
 - An adaptation of the externally developed Framingham risk model, and
-- an adaptation of the Framingham risk model recalibrated on the HUNT
+- An adaptation of the Framingham risk model recalibrated on the HUNT
   Study data \[[5](#ref-RN10737)\] .
 
 Two more modelling methods were reported in our study: The K-Nearest
 Neighbour and the SVM models. These are not provided here, as they could
 not be detached from the development data which we do not have
-permission to share freely. See \[main article\] for more info and how
-to apply for access to these data.
+permission to share. See \[ref to preprint\] for more info and how to
+apply for access to these data.
 
-#### Models, preprocessings and helper functions.
+#### Models, preprocessings and helper functions
 
 ``` r
 load("models.rds")
@@ -39,19 +39,18 @@ source("helper_functions.r")
 
 #### Data
 
-We include some example data to illustrate the input data required for
-the different models. All possible variable types and levels are
-represented. See \[main article\] for information on variables and how
-they were recorded and constructed. Note that the example data is not
-real data and is only included to demonstrate how the resources in this
-repository may be used.
+We include some example data to illustrate the input data for the
+different models. All variables and levels are represented. See \[ref to
+preprint\] for information on variables and how they were recorded and
+constructed. Note that the example data is not real data and is only
+included to demonstrate how the resources in this repository may be
+used.
 
 ``` r
 load("example_data.rds")
 ```
 
-The variables needed as input to the XGBoost, Random Forest and Elastic
-regression models:
+##### Table 1: Variables needed as input to the XGBoost, Random Forest and Elastic regression models:
 
 | Variable      | Type           | Levels                                                          |
 |---------------|----------------|-----------------------------------------------------------------|
@@ -104,8 +103,18 @@ variables. These are: *Age*, *systolic blood pressure*, *diastolic blood
 pressure*, *BMI*, *height*, and *history of hypertension in close
 family*. This model was derived from a sensitivity analysis performed
 after development of the full models. The corresponding regularization
-penalty applied in model fitting was log( lambda ) = -4.384, see Figure
-… in the development article \[main article\].
+penalty applied in model fitting was log( lambda ) = -4.384, and gave
+performance shown in Table 2. See Figure 3 in the development article
+\[ref to preprint\].
+
+##### Table 2: Performance model using simple-to-collect variables
+
+| AUC                    | Brier Score            | ICI                    |
+|------------------------|------------------------|------------------------|
+| 0.796 \[0.786, 0.806\] | 0.151 \[0.146, 0.155\] | 0.033 \[0.025, 0.041\] |
+
+Reported as mean with 95% confidence interval after bootstrapping on the
+test set.
 
 ``` r
 source("auxiliary_models.r")
@@ -129,18 +138,17 @@ twoClassSummary(as.data.frame(preds), lev = levels(preds$obs))
 #### The Framingham risk model
 
 The Framingham risk model was the only externally developed model we
-could find that we were able to implement using the available variables
-in the HUNT Study data \[[5](#ref-RN10737)\] . To encourage reproduction
-and further external validation, we include the model used here. This
-model only require the following variables in the dataframe/tibble
-provided to the ‘newdata’ argument: *Age*, *systolic BP*, *diastolic
-BP*, *BMI*, *sex*, *smoking status* and *family history of
-hypertension*.
+could find in the literature that we could implement using the available
+HUNT Study data \[[5](#ref-RN10737)\] . To encourage reproduction and
+further external validation, we include the model used here. This model
+only require the following variables in the dataframe/tibble provided to
+the ‘newdata’ argument: *Age*, *systolic BP*, *diastolic BP*, *BMI*,
+*sex*, *smoking status* and *family history of hypertension*.
 
 Note that the data must be in its original form when the Framingham risk
 model is used, i.e., without preprocessing. See Table in S4 Table in the
-development article for details on adaptations made to the model to fit
-the available data in the HUNT Study \[main article\].
+development article for details on model adaptations to fit the
+available HUNT Study data \[ref to preprint\].
 
 ``` r
 # Note the use of example_data and not prepped_example_data
@@ -164,9 +172,9 @@ twoClassSummary(as.data.frame(preds), lev = levels(preds$obs))
 
 Lastly, we include the Framingham risk model after recalibration to the
 HUNT Study data using method 2 suggested by Steyerberg
-\[[6](#ref-steyerberg2004)\] . See Table in S4 Table in the development
-article for details on adaptations made to the model to fit the
-available data in the HUNT Study \[main article\].
+\[[6](#ref-steyerberg2004)\] . See Table in S4 Table in the development
+article for details on model adaptations to fit the available HUNT Study
+data \[ref to preprint\].
 
 ``` r
 #We use the same dataset as for 'framingham'
@@ -185,14 +193,14 @@ twoClassSummary(as.data.frame(preds), lev = levels(preds$obs))
 
 #### Performance measures
 
-We include a formatting function for easy use of caret-package metrics
-as well as custom metrics. We have included the Brier Score and
-Integrated Calibration Index as custom functions
-\[[7](#ref-austin2019)\] \[[8](#ref-brier1950)\] . See, e.g.,
+We include a formatting function for easy use of caret-package and
+custom metrics. We included the Brier Score and Integrated Calibration
+Index as custom functions \[[7](#ref-austin2019)\]
+\[[8](#ref-brier1950)\] . See, e.g.,
 <https://topepo.github.io/caret/measuring-performance.html> for more
 performance metrics. Note that since the example data is only for
-demonstration, the performance measures are shown only for illustrative
-purposes and do not reflect real performance.
+demonstration, the performance measures are shown for illustrative
+purposes only and do not reflect real performance.
 
 ``` r
 preds <- format_predictions(outcome=prepped_example_data$HypOutcome, predicted_probs=y_hat) 
