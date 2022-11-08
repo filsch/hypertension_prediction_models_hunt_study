@@ -17,7 +17,7 @@ library(randomForest) #version 4.7.1.1
 library(recipes) #version 1.0.1
 ```
 
-Dissemination and external validation of hypertension risk models is important, but rarely accommodated for in the literature. This is especially true when machine learning models are being used, as they are often too complex to describe in traditional appendices. We used machine learning to predict risk of hypertension 11 years later on data from 23722 HUNT Study participants, and provide the machine learning models developed using the XGBoost, Random Forest, and Elastic regression methods @åsvold2022 @chen2021 @breiman2001 @zou2005 . See [ref to preprint] for details on how these models were fitted.
+Dissemination and external validation of hypertension risk models is important, but rarely accommodated for in the literature. This is especially true when machine learning models are being used, as they are often too complex to describe in traditional appendices. We used machine learning to predict risk of hypertension 11 years later on data from 23722 HUNT Study participants, and provide the machine learning models developed using the XGBoost, Random Forest, and Elastic regression methods @åsvold2022 @chen2021 @breiman2001 @zou2005 . See @schjerven2022 for details on how these models were fitted.
 
 In addition, we include three additional models:
 
@@ -25,7 +25,7 @@ In addition, we include three additional models:
 -   An adaptation of the externally developed Framingham risk model, and
 -   An adaptation of the Framingham risk model recalibrated on the HUNT Study data @RN10737 .
 
-Two more modelling methods were reported in our study: The K-Nearest Neighbour and the SVM models. These are not provided here, as they could not be detached from the development data which we do not have permission to share. See [ref to preprint] for more info and how to apply for access to these data.
+Two more modelling methods were reported in our study: The K-Nearest Neighbour and the SVM models. These are not provided here, as they could not be detached from the development data which we do not have permission to share. See @schjerven2022 for more info and how to apply for access to these data.
 
 #### Models, preprocessings and helper functions
 
@@ -37,7 +37,7 @@ source("helper_functions.r")
 
 #### Data
 
-We include some example data to illustrate the input data for the different models. All variables and levels are represented. See [ref to preprint] for information on variables and how they were recorded and constructed. Note that the example data is not real data and is only included to demonstrate how the resources in this repository may be used.
+We include some example data to illustrate the input data for the different models. All variables and levels are represented. See @schjerven2022 for information on variables and how they were recorded and constructed. Note that the example data is not real data and is only included to demonstrate how the resources in this repository may be used.
 
 ```{r data}
 load("example_data.rds")
@@ -90,12 +90,14 @@ head(y_hat, n=2)
 
 #### Model using simple-to-collect variables
 
-We include a logistic regression model that uses 6 more easily-available variables. These are: *Age*, *systolic blood pressure*, *diastolic blood pressure*, *BMI*, *height*, and *history of hypertension in close family*. This model was derived from a sensitivity analysis performed after development of the full models. The corresponding regularization penalty applied in model fitting was log( lambda ) = -4.384, and gave performance shown in Table 2. See Figure 3 in the development article [ref to preprint].
+We include a logistic regression model that uses 6 more easily-available variables. These are: *Age*, *systolic blood pressure*, *diastolic blood pressure*, *BMI*, *height*, and *history of hypertension in close family*. This model was derived from a sensitivity analysis performed after development of the full models. The corresponding regularization penalty applied in model fitting was log( lambda ) = -4.384, and gave performance shown in Table 2. See Figure 3 in the development article @schjerven2022.
 
 ##### Table 2: Performance of model using simple-to-collect variables
+
 | AUC                  | Brier Score          | ICI                  |
 |----------------------|----------------------|----------------------|
 | 0.796 [0.786, 0.806] | 0.151 [0.146, 0.155] | 0.033 [0.025, 0.041] |
+
 Reported as mean with 95% confidence interval after bootstrapping on the test set.
 
 ```{r simpler}
@@ -119,7 +121,7 @@ twoClassSummary(as.data.frame(preds), lev = levels(preds$obs))
 
 The Framingham risk model was the only externally developed model we could find in the literature that we could implement using the available HUNT Study data @RN10737 . To encourage reproduction and further external validation, we include the model used here. This model only require the following variables in the dataframe/tibble provided to the 'newdata' argument: *Age*, *systolic BP*, *diastolic BP*, *BMI*, *sex*, *smoking status* and *family history of hypertension*.
 
-Note that the data must be in its original form when the Framingham risk model is used, i.e., without preprocessing. See Table in S4 Table in the development article for details on model adaptations to fit the available HUNT Study data [ref to preprint].
+Note that the data must be in its original form when the Framingham risk model is used, i.e., without preprocessing. See Table in S4 Table in the development article for details on model adaptations to fit the available HUNT Study data @schjerven2022.
 
 ```{r fr}
 # Note the use of example_data and not prepped_example_data
@@ -138,7 +140,7 @@ twoClassSummary(as.data.frame(preds), lev = levels(preds$obs))
 
 #### The Framingham risk model recalibrated using HUNT Study data
 
-Lastly, we include the Framingham risk model after recalibration to the HUNT Study data using method 2 suggested by Steyerberg @steyerberg2004 . See Table in S4 Table in the development article for details on model adaptations to fit the available HUNT Study data [ref to preprint].
+Lastly, we include the Framingham risk model after recalibration to the HUNT Study data using method 2 suggested by Steyerberg @steyerberg2004 . See Table in S4 Table in the development article for details on model adaptations to fit the available HUNT Study data @schjerven2022.
 
 ```{r recal fr}
 #We use the same dataset as for 'framingham'

@@ -11,8 +11,8 @@ learning to predict risk of hypertension 11 years later on data from
 23722 HUNT Study participants, and provide the machine learning models
 developed using the XGBoost, Random Forest, and Elastic regression
 methods \[[1](#ref-åsvold2022)\] \[[2](#ref-chen2021)\]
-\[[3](#ref-breiman2001)\] \[[4](#ref-zou2005)\] . See \[ref to
-preprint\] for details on how these models were fitted.
+\[[3](#ref-breiman2001)\] \[[4](#ref-zou2005)\] . See
+\[[5](#ref-schjerven2022)\] for details on how these models were fitted.
 
 In addition, we include three additional models:
 
@@ -21,13 +21,13 @@ In addition, we include three additional models:
   easily available features,
 - An adaptation of the externally developed Framingham risk model, and
 - An adaptation of the Framingham risk model recalibrated on the HUNT
-  Study data \[[5](#ref-RN10737)\] .
+  Study data \[[6](#ref-RN10737)\] .
 
 Two more modelling methods were reported in our study: The K-Nearest
 Neighbour and the SVM models. These are not provided here, as they could
 not be detached from the development data which we do not have
-permission to share. See \[ref to preprint\] for more info and how to
-apply for access to these data.
+permission to share. See \[[5](#ref-schjerven2022)\] for more info and
+how to apply for access to these data.
 
 #### Models, preprocessings and helper functions
 
@@ -40,11 +40,11 @@ source("helper_functions.r")
 #### Data
 
 We include some example data to illustrate the input data for the
-different models. All variables and levels are represented. See \[ref to
-preprint\] for information on variables and how they were recorded and
-constructed. Note that the example data is not real data and is only
-included to demonstrate how the resources in this repository may be
-used.
+different models. All variables and levels are represented. See
+\[[5](#ref-schjerven2022)\] for information on variables and how they
+were recorded and constructed. Note that the example data is not real
+data and is only included to demonstrate how the resources in this
+repository may be used.
 
 ``` r
 load("example_data.rds")
@@ -105,7 +105,7 @@ family*. This model was derived from a sensitivity analysis performed
 after development of the full models. The corresponding regularization
 penalty applied in model fitting was log( lambda ) = -4.384, and gave
 performance shown in Table 2. See Figure 3 in the development article
-\[ref to preprint\].
+\[[5](#ref-schjerven2022)\].
 
 ##### Table 2: Performance of model using simple-to-collect variables
 
@@ -139,7 +139,7 @@ twoClassSummary(as.data.frame(preds), lev = levels(preds$obs))
 
 The Framingham risk model was the only externally developed model we
 could find in the literature that we could implement using the available
-HUNT Study data \[[5](#ref-RN10737)\] . To encourage reproduction and
+HUNT Study data \[[6](#ref-RN10737)\] . To encourage reproduction and
 further external validation, we include the model used here. This model
 only require the following variables in the dataframe/tibble provided to
 the ‘newdata’ argument: *Age*, *systolic BP*, *diastolic BP*, *BMI*,
@@ -148,7 +148,7 @@ the ‘newdata’ argument: *Age*, *systolic BP*, *diastolic BP*, *BMI*,
 Note that the data must be in its original form when the Framingham risk
 model is used, i.e., without preprocessing. See Table in S4 Table in the
 development article for details on model adaptations to fit the
-available HUNT Study data \[ref to preprint\].
+available HUNT Study data \[[5](#ref-schjerven2022)\].
 
 ``` r
 # Note the use of example_data and not prepped_example_data
@@ -172,9 +172,9 @@ twoClassSummary(as.data.frame(preds), lev = levels(preds$obs))
 
 Lastly, we include the Framingham risk model after recalibration to the
 HUNT Study data using method 2 suggested by Steyerberg
-\[[6](#ref-steyerberg2004)\] . See Table in S4 Table in the development
+\[[7](#ref-steyerberg2004)\] . See Table in S4 Table in the development
 article for details on model adaptations to fit the available HUNT Study
-data \[ref to preprint\].
+data \[[5](#ref-schjerven2022)\].
 
 ``` r
 #We use the same dataset as for 'framingham'
@@ -195,8 +195,8 @@ twoClassSummary(as.data.frame(preds), lev = levels(preds$obs))
 
 We include a formatting function for easy use of caret-package and
 custom metrics. We included the Brier Score and Integrated Calibration
-Index as custom functions \[[7](#ref-austin2019)\]
-\[[8](#ref-brier1950)\] . See, e.g.,
+Index as custom functions \[[8](#ref-austin2019)\]
+\[[9](#ref-brier1950)\] . See, e.g.,
 <https://topepo.github.io/caret/measuring-performance.html> for more
 performance metrics. Note that since the example data is only for
 demonstration, the performance measures are shown for illustrative
@@ -279,9 +279,20 @@ doi:[10.1111/j.1467-9868.2005.00503.x](https://doi.org/10.1111/j.1467-9868.2005.
 
 </div>
 
-<div id="ref-RN10737" class="csl-entry">
+<div id="ref-schjerven2022" class="csl-entry">
 
 <span class="csl-left-margin">5. </span><span
+class="csl-right-inline">Schjerven FE, Ingeström E, Lindseth F,
+Steinsland I. Can machine learning improve risk prediction of incident
+hypertension? An internal method comparison and external validation of
+the Framingham risk model using HUNT Study data. 2022 Nov.
+doi:[10.1101/2022.11.02.22281859](https://doi.org/10.1101/2022.11.02.22281859)</span>
+
+</div>
+
+<div id="ref-RN10737" class="csl-entry">
+
+<span class="csl-left-margin">6. </span><span
 class="csl-right-inline">Parikh NI, Pencina MJ, Wang TJ, Benjamin EJ,
 Lanier KJ, Levy D, et al. A risk score for predicting near-term
 incidence of hypertension: The framingham heart study. Annals of
@@ -292,7 +303,7 @@ doi:[10.7326/0003-4819-148-2-200801150-00005](https://doi.org/10.7326/0003-4819-
 
 <div id="ref-steyerberg2004" class="csl-entry">
 
-<span class="csl-left-margin">6. </span><span
+<span class="csl-left-margin">7. </span><span
 class="csl-right-inline">Steyerberg EW, Borsboom GJJM, Houwelingen HC
 van, Eijkemans MJC, Habbema JDF. Validation and updating of predictive
 logistic regression models: a study on sample size and shrinkage.
@@ -303,7 +314,7 @@ doi:[10.1002/sim.1844](https://doi.org/10.1002/sim.1844)</span>
 
 <div id="ref-austin2019" class="csl-entry">
 
-<span class="csl-left-margin">7. </span><span
+<span class="csl-left-margin">8. </span><span
 class="csl-right-inline">Austin PC, Steyerberg EW. The Integrated
 Calibration Index (ICI) and related metrics for quantifying the
 calibration of logistic regression models. Statistics in Medicine.
@@ -314,7 +325,7 @@ doi:[10.1002/sim.8281](https://doi.org/10.1002/sim.8281)</span>
 
 <div id="ref-brier1950" class="csl-entry">
 
-<span class="csl-left-margin">8. </span><span
+<span class="csl-left-margin">9. </span><span
 class="csl-right-inline">Brier GW. Verification of forecasts expressed
 in terms of probability. Monthly weather review. 1950;78: 1–3. </span>
 
