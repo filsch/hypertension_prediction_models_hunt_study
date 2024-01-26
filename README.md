@@ -46,13 +46,12 @@ data, developed from Chinese, Iranian and Korean populations
 </li>
 </ol>
 
-The Framingham risk model is a risk model developed using the Framingham
-Offspring Cohort<sup>[5](#ref-parikh_risk_2008)</sup>. Two more
-modelling methods were developed in our study: The K-Nearest Neighbour
-and the SVM models. These are not provided here, as they could not be
-detached from the development data which we do not have permission to
-share. Data can be obtained upon approval from REK and HUNT Research
-Centre. For more information see: www.ntnu.edu/hunt/data.
+Two more modelling methods were applied in our study: The K-Nearest
+Neighbour and the SVM methods. These models are not provided here, as
+they could not be detached from the development data which we do not
+have permission to share. Data can be obtained upon approval from REK
+and HUNT Research Centre. For more information see:
+www.ntnu.edu/hunt/data.
 
 #### Models, preprocessings and helper functions
 
@@ -123,7 +122,7 @@ functions, which paired with the ‘dummies_to_categorical()’ function
 provides all preprocessing needed for the ML models included. The steps
 needed for the various models are as follows:
 
-#### Table 2: Preprocessing needed for included models:
+##### Table 2: Preprocessing needed for included models:
 
 | models                                                                     | Preprocessing needed                                        |
 |----------------------------------------------------------------------------|-------------------------------------------------------------|
@@ -142,7 +141,8 @@ needed for the various models are as follows:
 | F-CAVAS model                                                              | \-                                                          |
 
 \* Standardization to the mean and standard deviation of the training
-set, see the development article.
+set, see the development article. These are already included in the
+‘prep’ object.
 
 The following example show how to predict using the example data for all
 models:
@@ -184,12 +184,13 @@ Data. We found seven models from five articles: The Framingham risk
 model<sup>[5](#ref-parikh_risk_2008)</sup>, the Chinese risk
 models<sup>[6](#ref-chien_prediction_2011)</sup>, the KoGES
 model<sup>[7](#ref-lim_validation_2016)</sup>, the TLGS
-model<sup>[8](#ref-koohi_validation_2021)</sup>, and the CAVAS
-models<sup>[9](#ref-namgung_development_2022)</sup>. To encourage
-reproduction and further external validation, we include the model used
-here. The only needed features are *Age*, *systolic BP*, *diastolic BP*,
-*BMI*, *sex*, *smoking status* and *family history of hypertension*. A
-recalibrated version of the Framingham risk model is also included.
+model<sup>[8](#ref-koohi_validation_2021)</sup>, and the CAVAS and
+F-CAVAS models<sup>[9](#ref-namgung_development_2022)</sup>. To
+encourage reproduction and further external validation, we include the
+models used here. The only needed features are *Age*, *systolic BP*,
+*diastolic BP*, *BMI*, *sex*, *smoking status* and *family history of
+hypertension*. A recalibrated version of the Framingham risk model is
+also included.
 
 Details on the adaptations made to the risk models are described in the
 development article.
