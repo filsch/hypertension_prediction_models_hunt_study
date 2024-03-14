@@ -4,15 +4,23 @@ Filip Schjerven
 2024-01-24
 
 Dissemination and external validation of hypertension risk models is
-important, but rarely accommodated for in the literature. This is
+important, but rarely accommodated for in the
+literature<sup>[1](#ref-schjerven_prognostic_2024)</sup>. This is
 especially true when machine learning models are being used, as they are
-often too complex to describe in traditional appendices. We used machine
-learning to predict risk of hypertension 11 years later on data from 17
-852 HUNT Study participants, and provide the machine learning models
-developed using the XGBoost, Random Forest, and Elastic regression
-methods<sup>[1](#ref-asvold_cohort_2022)</sup><sup>[2](#ref-chen_xgboost_2021)</sup><sup>[3](#ref-breiman_random_2001)</sup><sup>[4](#ref-zou_regularization_2005)</sup>.
-A reference to the development-article detailing data flow, model
-development, and data accessibility will be made upon publication.
+often too complex to describe in traditional appendices. A recent
+systematic review details that only 4 of 13 studies developing risk
+models using machine learning made their developed model available, and
+only in the cases where the model could be presented
+graphically<sup>[1](#ref-schjerven_prognostic_2024)</sup>.
+
+We used machine learning to predict risk of hypertension 11 years later
+on data from 17 852 HUNT Study participants, and provide the machine
+learning models developed using the XGBoost, Random Forest, and Elastic
+regression
+methods<sup>[2](#ref-schjerven_development_2024)</sup><sup>[3](#ref-asvold_cohort_2022)</sup><sup>[4](#ref-chen_xgboost_2021)</sup><sup>[5](#ref-breiman_random_2001)</sup><sup>[6](#ref-zou_regularization_2005)</sup>.
+Details on data flow, model development, and data accessibility can be
+found within the associated
+publication<sup>[2](#ref-schjerven_development_2024)</sup>.
 
 In total, we provide 13 risk models:
 
@@ -181,26 +189,28 @@ To encourage the use of existing models on hypertension risk modelling,
 we searched the literature for risk models suitable for our time-frame
 with variables that could be adapted to those found in the HUNT Study
 Data. We found seven models from five articles: The Framingham risk
-model<sup>[5](#ref-parikh_risk_2008)</sup>, the Chinese risk
-models<sup>[6](#ref-chien_prediction_2011)</sup>, the KoGES
-model<sup>[7](#ref-lim_validation_2016)</sup>, the TLGS
-model<sup>[8](#ref-koohi_validation_2021)</sup>, and the CAVAS and
-F-CAVAS models<sup>[9](#ref-namgung_development_2022)</sup>. To
+model<sup>[7](#ref-parikh_risk_2008)</sup>, the Chinese risk
+models<sup>[8](#ref-chien_prediction_2011)</sup>, the KoGES
+model<sup>[9](#ref-lim_validation_2016)</sup>, the TLGS
+model<sup>[10](#ref-koohi_validation_2021)</sup>, and the CAVAS and
+F-CAVAS models<sup>[11](#ref-namgung_development_2022)</sup>. To
 encourage reproduction and further external validation, we include the
 models used here. The only needed features are *Age*, *systolic BP*,
 *diastolic BP*, *BMI*, *sex*, *smoking status* and *family history of
 hypertension*. A recalibrated version of the Framingham risk model is
-also included.
+also included. A meta-analysis of external validations of the Framingham
+risk model by other researchers can be found
+in<sup>[1](#ref-schjerven_prognostic_2024)</sup>.
 
 Details on the adaptations made to the risk models are described in the
-development article.
+development article<sup>[2](#ref-schjerven_development_2024)</sup>.
 
 #### Performance measures
 
 We include a formatting function for easy use of caret-package and
 custom metrics. We included the scaled Brier Score and Integrated
 Calibration Index as custom
-functions<sup>[10](#ref-austin_integrated_2019)</sup><sup>[11](#ref-brier_verification_1950)</sup><sup>[12](#ref-steyerberg_assessing_2010)</sup>.
+functions<sup>[12](#ref-austin_integrated_2019)</sup><sup>[13](#ref-brier_verification_1950)</sup><sup>[14](#ref-steyerberg_assessing_2010)</sup>.
 See, e.g., <https://topepo.github.io/caret/measuring-performance.html>
 for more performance metrics. Note that since the example data is only
 for demonstration, the performance measures are shown for illustrative
@@ -229,9 +239,31 @@ totalSummary(preds, lev = levels(preds$obs))
 
 <div id="refs" class="references csl-bib-body" line-spacing="2">
 
-<div id="ref-asvold_cohort_2022" class="csl-entry">
+<div id="ref-schjerven_prognostic_2024" class="csl-entry">
 
 <span class="csl-left-margin">1.
+</span><span class="csl-right-inline">Schjerven, F. E., Lindseth, F. &
+Steinsland, I. [Prognostic risk models for incident hypertension: A
+PRISMA systematic review and
+meta-analysis](https://doi.org/10.1371/journal.pone.0294148). *PLOS ONE*
+**19**, e0294148 (2024).</span>
+
+</div>
+
+<div id="ref-schjerven_development_2024" class="csl-entry">
+
+<span class="csl-left-margin">2.
+</span><span class="csl-right-inline">Schjerven, F. E., Ingeström, E. M.
+L., Steinsland, I. & Lindseth, F. [Development of risk models of
+incident hypertension using machine learning on the HUNT study
+data](https://doi.org/10.1038/s41598-024-56170-7). *Scientific Reports*
+**14**, 5609 (2024).</span>
+
+</div>
+
+<div id="ref-asvold_cohort_2022" class="csl-entry">
+
+<span class="csl-left-margin">3.
 </span><span class="csl-right-inline">Csvold, B. O. *et al.* Cohort
 Profile Update: The HUNT Study, Norway. *International Journal of
 Epidemiology* (2022)
@@ -241,7 +273,7 @@ doi:[10.1093/ije/dyac095](https://doi.org/10.1093/ije/dyac095).</span>
 
 <div id="ref-chen_xgboost_2021" class="csl-entry">
 
-<span class="csl-left-margin">2.
+<span class="csl-left-margin">4.
 </span><span class="csl-right-inline">Chen, T. *et al.* [Xgboost:
 Extreme Gradient Boosting](https://github.com/dmlc/xgboost).
 (2021).</span>
@@ -250,7 +282,7 @@ Extreme Gradient Boosting](https://github.com/dmlc/xgboost).
 
 <div id="ref-breiman_random_2001" class="csl-entry">
 
-<span class="csl-left-margin">3.
+<span class="csl-left-margin">5.
 </span><span class="csl-right-inline">Breiman, L. [Random
 Forests](https://doi.org/10.1023/A:1010933404324). *Machine Learning*
 **45**, 5–32 (2001).</span>
@@ -259,7 +291,7 @@ Forests](https://doi.org/10.1023/A:1010933404324). *Machine Learning*
 
 <div id="ref-zou_regularization_2005" class="csl-entry">
 
-<span class="csl-left-margin">4.
+<span class="csl-left-margin">6.
 </span><span class="csl-right-inline">Zou, H. & Hastie, T.
 [Regularization and variable selection via the elastic
 net](https://doi.org/10.1111/j.1467-9868.2005.00503.x). *Journal of the
@@ -270,7 +302,7 @@ Royal Statistical Society: Series B (Statistical Methodology)* **67**,
 
 <div id="ref-parikh_risk_2008" class="csl-entry">
 
-<span class="csl-left-margin">5.
+<span class="csl-left-margin">7.
 </span><span class="csl-right-inline">Parikh, N. I. *et al.* [A risk
 score for predicting near-term incidence of hypertension: The Framingham
 Heart Study.](https://doi.org/10.7326/0003-4819-148-2-200801150-00005)
@@ -280,7 +312,7 @@ Heart Study.](https://doi.org/10.7326/0003-4819-148-2-200801150-00005)
 
 <div id="ref-chien_prediction_2011" class="csl-entry">
 
-<span class="csl-left-margin">6.
+<span class="csl-left-margin">8.
 </span><span class="csl-right-inline">Chien, K.-L. *et al.* [Prediction
 models for the risk of new-onset hypertension in ethnic Chinese in
 Taiwan.](https://doi.org/10.1038/jhh.2010.63) *Journal of human
@@ -290,7 +322,7 @@ hypertension* **25**, 294–303 (2011).</span>
 
 <div id="ref-lim_validation_2016" class="csl-entry">
 
-<span class="csl-left-margin">7.
+<span class="csl-left-margin">9.
 </span><span class="csl-right-inline">Lim, N.-K., Lee, J.-W. & Park,
 H.-Y. [Validation of the Korean Genome Epidemiology Study Risk Score to
 Predict Incident Hypertension in a Large Nationwide Korean
@@ -302,7 +334,7 @@ Cohort.](https://doi.org/10.1253/circj.CJ-15-1334) *Circulation journal
 
 <div id="ref-koohi_validation_2021" class="csl-entry">
 
-<span class="csl-left-margin">8.
+<span class="csl-left-margin">10.
 </span><span class="csl-right-inline">Koohi, F. *et al.* [Validation of
 the Framingham hypertension risk score in a middle eastern population:
 Tehran lipid and glucose study
@@ -313,7 +345,7 @@ Tehran lipid and glucose study
 
 <div id="ref-namgung_development_2022" class="csl-entry">
 
-<span class="csl-left-margin">9.
+<span class="csl-left-margin">11.
 </span><span class="csl-right-inline">Namgung, H. K. *et al.*
 Development and validation of hypertension prediction models: The Korean
 Genome and Epidemiology Study\_cardiovascular Disease Association Study
@@ -324,7 +356,7 @@ doi:[10.1038/s41371-021-00645-x](https://doi.org/10.1038/s41371-021-00645-x).</s
 
 <div id="ref-austin_integrated_2019" class="csl-entry">
 
-<span class="csl-left-margin">10.
+<span class="csl-left-margin">12.
 </span><span class="csl-right-inline">Austin, P. C. & Steyerberg, E. W.
 [The Integrated Calibration Index (ICI) and related metrics for
 quantifying the calibration of logistic regression
@@ -335,7 +367,7 @@ models](https://doi.org/10.1002/sim.8281). *Statistics in Medicine*
 
 <div id="ref-brier_verification_1950" class="csl-entry">
 
-<span class="csl-left-margin">11.
+<span class="csl-left-margin">13.
 </span><span class="csl-right-inline">Brier, G. W. Verification of
 forecasts expressed in terms of probability. *Monthly weather review*
 **78**, 1–3 (1950).</span>
@@ -344,7 +376,7 @@ forecasts expressed in terms of probability. *Monthly weather review*
 
 <div id="ref-steyerberg_assessing_2010" class="csl-entry">
 
-<span class="csl-left-margin">12.
+<span class="csl-left-margin">14.
 </span><span class="csl-right-inline">Steyerberg, E. W. *et al.*
 [Assessing the performance of prediction models: A framework for
 traditional and novel
